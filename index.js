@@ -6,7 +6,7 @@ var local_settings = require('./local_settings');
 
 var sequelize = new Sequelize(local_settings.db_name,
         local_settings.login,
-        local_settings.passoword,
+        local_settings.password,
         {dialect: 'postgres'});
 
 var User = sequelize.define('users', {
