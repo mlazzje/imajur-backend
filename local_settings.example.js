@@ -2,7 +2,7 @@
 
 
 module.exports = {
-    db_name: "imajur",
-    login: "imajur",
-    password: null
+	db_name: "imajur",
+	login: "imajur",
+	password: null
 }
