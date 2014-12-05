@@ -6,19 +6,20 @@ var local_settings = require('./local_settings');
 var model = require('./model');
 
 var sequelize = new Sequelize(local_settings.db_name,
-		local_settings.login,
-		local_settings.password,
-		{dialect: 'postgres'});
+	local_settings.login,
+	local_settings.password,
+	{dialect: 'postgres'}
+);
 
-	sequelize
+sequelize
 .sync({force: true})
-	.complete(function(err) {
-		if (!!err) {
-			console.log('An error occurred while creating the table:', err)
-		} else {
-			console.log('It worked!')
-		}
-	})
+.complete(function(err) {
+	if (!!err) {
+		console.log('An error occurred while creating the table:', err)
+	} else {
+		console.log('It worked!')
+	}
+})
 
 server.route({
 	method: 'GET',
@@ -26,12 +27,13 @@ server.route({
 	handler: function (request, reply) {
 		User.create({
 			username: 'john-doe',
-			password: "lol"})
-			.complete(function(err, user) {
-				User.findAll().complete(function(err, us) {
-					reply(us);
-				});
+			password: "lol"}
+		)
+		.complete(function(err, user) {
+			User.findAll().complete(function(err, us) {
+				reply(us);
 			});
+		});
 	}
 });
 
