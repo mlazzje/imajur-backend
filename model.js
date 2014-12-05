@@ -53,3 +53,11 @@ var Vote = sequelize.define('vote', {
 		values: [1, -1],
 	},
 });
+
+User.hasMany(Image, {as: 'Images'});
+User.hasMany(Commentaire, {as: 'Commentaires'});
+User.hasMany(Vote, {as: 'Votes'});
+
+Image.hasMany(Commentaire, {as: 'Commentaires'});
+Image.hasMany(Vote, {as: 'Votes'});
+
