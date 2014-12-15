@@ -2,7 +2,8 @@
 
 var userController = require('../controllers/user');
 
-module.exports = 
-    [
-    { method: 'GET', path: '/', config: { handler: userController.list}}
-    ]
+module.exports = [{
+	method: 'GET',
+	path: '/',
+	config: {handler: userController.list}
+}]
