@@ -6,6 +6,10 @@ module.exports = [{
 	config: {handler: imageController.list}
 },{
 	method: 'GET',
+	path: '/image/',
+	config: {handler: imageController.list}
+},{
+	method: 'GET',
 	path: '/image/list',
 	config: {handler: imageController.list}
 },{
@@ -18,10 +22,10 @@ module.exports = [{
 	config: {handler: imageController.insert}
 },{
 	method: 'GET',
-	path: '/image/remove',
+	path: '/image/remove/{id}',
 	config: {handler: imageController.remove}
 },{
-	method: 'GET',
+	method: 'POST',
 	path: '/image/update',
 	config: {handler: imageController.update}
 }];
