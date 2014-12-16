@@ -7,10 +7,11 @@ db.sequelize.sync().complete(function(err) {
     if (err) {
         throw err[0]
     } else {
-        var server = new hapi.Server(3000);
+        var server = new hapi.Server();
+        server.connection({port: 3000});
         server.route(routes);
         server.start(function () {
-            console.log('Server running at :', server.info.uri);
+            console.log("Listening on 3000");
         });
     }
 });

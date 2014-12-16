@@ -9,15 +9,15 @@ ImageController.prototype = (function() {
 			{
 				db.Image.findAll()
 				.success(function(err, images) {
-					reply(images);
+					return reply(images);
 				})
 				.error(function(err) {
-					reply(err).code(418);
+					return reply(err).code(418);
 				});
 			}
 			catch(exception)
 			{
-				reply(exception).code(418);
+				return reply(exception).code(418);
 			}
 		},
 		get: function(request, reply) {

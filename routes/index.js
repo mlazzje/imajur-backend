@@ -10,6 +10,7 @@ fs.readdirSync(__dirname)
 })
 .forEach(function (file) {
 	var mod = require(path.join(__dirname, file));
-	Array.prototype.push.apply(module.exports, mod);
-	_.extend(module.exports, mod);
+    module.exports = module.exports.concat(mod)
+	//Array.prototype.push.apply(module.exports, mod);
+	//_.extend(module.exports, mod);
 });
