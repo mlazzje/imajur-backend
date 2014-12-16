@@ -5,8 +5,9 @@
 	Contrôleur 'image'
 */
 
-// Chargement des modèles
+// Chargement des modèles et des modules
 var db = require('../models');
+var fs = require('fs');
 
 function ImageController(){};
 
@@ -105,6 +106,39 @@ ImageController.prototype = (function() {
 					}
 					image.save();
 					reply(image);
+				})
+				.error(function(err) {
+					// Gestion d'erreur
+					reply(err).code(418);
+				});
+			}
+			catch(exception)
+			{
+				reply(exception).code(418);
+			}
+		},
+		file: function(request, reply) {
+			try
+			{
+				db.Image.findOne(parseInt(request.params.id))
+				.success(function(err, image) {
+					
+					if (!image) {
+						// Gestion d'erreur
+						reply("ERROR").code(418);
+					}
+					
+					// Génération du chemin vers le fichier image
+					var src = "/uploads/i/" + image.id + "." + image.extension;
+					
+					// Si le fichier n'existe pas, on retourne une erreur
+					if (true /*TODO*/) {
+						reply("ERROR").code(418);
+					}
+					
+					// Sinon, on retourne le contenu du fichier
+					//TODO
+					
 				})
 				.error(function(err) {
 					// Gestion d'erreur

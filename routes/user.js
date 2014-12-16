@@ -7,7 +7,7 @@
 
 // Chargement du contrôleur
 var userController = require('../controllers/user');
-
+/*
 module.exports = [{
 	method: 'GET',
 	path: '/user/list',
@@ -29,3 +29,4 @@ module.exports = [{
 	path: '/user/update',
 	config: {handler: userController.update}
 }];
+*/

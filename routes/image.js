@@ -28,4 +28,8 @@ module.exports = [{
 	method: 'POST',
 	path: '/image/update',
 	config: {handler: imageController.update}
+},{
+	method: 'GET',
+	path: '/i/{id}',
+	config: {handler: imageController.file}
 }];
