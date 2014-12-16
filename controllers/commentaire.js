@@ -1,15 +1,15 @@
 var db = require('../models');
 
-function userController(){};
+function commentaireController(){};
 
-userController.prototype = (function() {
+commentaireController.prototype = (function() {
 	return {
 		list: function(request, reply) {
 			try
 			{
-				db.user.findAll()
-				.success(function(err, users) {
-					reply(users);
+				db.commentaire.findAll()
+				.success(function(err, commentaires) {
+					reply(commentaires);
 				})
 				.error(function(err) {
 					reply(err).code(418);
@@ -23,9 +23,9 @@ userController.prototype = (function() {
 		get: function(request, reply) {
 			try
 			{
-				db.user.findOne(parseInt(request.params.id))
-				.success(function(err, user) {
-					reply(user);
+				db.commentaire.findOne(parseInt(request.params.id))
+				.success(function(err, commentaire) {
+					reply(commentaire);
 				})
 				.error(function(err) {
 					reply(err).code(418);
@@ -39,12 +39,12 @@ userController.prototype = (function() {
 		insert: function(request, reply) {
 			try
 			{
-				db.user.create({
+				db.commentaire.create({
 					// TODO
 					//XXXXXXXX: request.payload.XXXXXXXX,
 				})
-				.success(function(err, user) {
-					reply(user);
+				.success(function(err, commentaire) {
+					reply(commentaire);
 				})
 				.error(function(err) {
 					reply(err).code(418);
@@ -58,10 +58,10 @@ userController.prototype = (function() {
 		remove: function(request, reply) {
 			try
 			{
-				db.user.findOne(parseInt(request.params.id))
-				.success(function(err, user) {
-					if (user) {
-						user.destroy();
+				db.commentaire.findOne(parseInt(request.params.id))
+				.success(function(err, commentaire) {
+					if (commentaire) {
+						commentaire.destroy();
 						reply("OK").code(200);
 					}
 					reply("ERROR").code(418);
@@ -78,12 +78,12 @@ userController.prototype = (function() {
 		update: function(request, reply) {
 			try
 			{
-				db.user.findOne(parseInt(request.payload.id))
-				.success(function(err, user) {
+				db.commentaire.findOne(parseInt(request.payload.id))
+				.success(function(err, commentaire) {
 					// TODO
-					//user.XXXXXXXX: request.payload.XXXXXXXX,
-					user.save();
-					reply(user);
+					//commentaire.XXXXXXXX: request.payload.XXXXXXXX,
+					commentaire.save();
+					reply(commentaire);
 				})
 				.error(function(err) {
 					reply(err).code(418);
@@ -97,5 +97,5 @@ userController.prototype = (function() {
 	}
 })();
 
-var userController = new userController();
-module.exports = userController;
+var commentaireController = new commentaireController();
+module.exports = commentaireController;

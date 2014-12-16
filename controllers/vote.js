@@ -1,15 +1,15 @@
 var db = require('../models');
 
-function userController(){};
+function voteController(){};
 
-userController.prototype = (function() {
+voteController.prototype = (function() {
 	return {
 		list: function(request, reply) {
 			try
 			{
-				db.user.findAll()
-				.success(function(err, users) {
-					reply(users);
+				db.vote.findAll()
+				.success(function(err, votes) {
+					reply(votes);
 				})
 				.error(function(err) {
 					reply(err).code(418);
@@ -23,9 +23,9 @@ userController.prototype = (function() {
 		get: function(request, reply) {
 			try
 			{
-				db.user.findOne(parseInt(request.params.id))
-				.success(function(err, user) {
-					reply(user);
+				db.vote.findOne(parseInt(request.params.id))
+				.success(function(err, vote) {
+					reply(vote);
 				})
 				.error(function(err) {
 					reply(err).code(418);
@@ -39,12 +39,12 @@ userController.prototype = (function() {
 		insert: function(request, reply) {
 			try
 			{
-				db.user.create({
+				db.vote.create({
 					// TODO
 					//XXXXXXXX: request.payload.XXXXXXXX,
 				})
-				.success(function(err, user) {
-					reply(user);
+				.success(function(err, vote) {
+					reply(vote);
 				})
 				.error(function(err) {
 					reply(err).code(418);
@@ -58,10 +58,10 @@ userController.prototype = (function() {
 		remove: function(request, reply) {
 			try
 			{
-				db.user.findOne(parseInt(request.params.id))
-				.success(function(err, user) {
-					if (user) {
-						user.destroy();
+				db.vote.findOne(parseInt(request.params.id))
+				.success(function(err, vote) {
+					if (vote) {
+						vote.destroy();
 						reply("OK").code(200);
 					}
 					reply("ERROR").code(418);
@@ -78,12 +78,12 @@ userController.prototype = (function() {
 		update: function(request, reply) {
 			try
 			{
-				db.user.findOne(parseInt(request.payload.id))
-				.success(function(err, user) {
+				db.vote.findOne(parseInt(request.payload.id))
+				.success(function(err, vote) {
 					// TODO
-					//user.XXXXXXXX: request.payload.XXXXXXXX,
-					user.save();
-					reply(user);
+					//vote.XXXXXXXX: request.payload.XXXXXXXX,
+					vote.save();
+					reply(vote);
 				})
 				.error(function(err) {
 					reply(err).code(418);
@@ -97,5 +97,5 @@ userController.prototype = (function() {
 	}
 })();
 
-var userController = new userController();
-module.exports = userController;
+var voteController = new voteController();
+module.exports = voteController;

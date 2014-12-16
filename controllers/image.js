@@ -8,8 +8,8 @@ ImageController.prototype = (function() {
 			try
 			{
 				db.Image.findAll()
-				.success(function(err, users) {
-					reply(users);
+				.success(function(err, images) {
+					reply(images);
 				})
 				.error(function(err) {
 					reply(err).code(418);
@@ -24,8 +24,8 @@ ImageController.prototype = (function() {
 			try
 			{
 				db.Image.findOne(parseInt(request.params.id))
-				.success(function(err, user) {
-					reply(user);
+				.success(function(err, image) {
+					reply(image);
 				})
 				.error(function(err) {
 					reply(err).code(418);
@@ -43,8 +43,8 @@ ImageController.prototype = (function() {
 					titre: request.payload.titre,
 					extension: request.payload.extension
 				})
-				.success(function(err, user) {
-					reply(user);
+				.success(function(err, image) {
+					reply(image);
 				})
 				.error(function(err) {
 					reply(err).code(418);
@@ -59,9 +59,9 @@ ImageController.prototype = (function() {
 			try
 			{
 				db.Image.findOne(parseInt(request.params.id))
-				.success(function(err, user) {
-					if (user) {
-						user.destroy();
+				.success(function(err, image) {
+					if (image) {
+						image.destroy();
 						reply("OK").code(200);
 					}
 					reply("ERROR").code(418);
@@ -79,11 +79,11 @@ ImageController.prototype = (function() {
 			try
 			{
 				db.Image.findOne(parseInt(request.payload.id))
-				.success(function(err, user) {
-					user.titre = request.payload.titre;
-					user.extension = request.payload.extension;
-					user.save();
-					reply(user);
+				.success(function(err, image) {
+					image.titre = request.payload.titre;
+					image.extension = request.payload.extension;
+					image.save();
+					reply(image);
 				})
 				.error(function(err) {
 					reply(err).code(418);

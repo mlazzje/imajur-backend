@@ -2,14 +2,6 @@ var imageController = require('../controllers/image');
 
 module.exports = [{
 	method: 'GET',
-	path: '/image',
-	config: {handler: imageController.list}
-},{
-	method: 'GET',
-	path: '/image/',
-	config: {handler: imageController.list}
-},{
-	method: 'GET',
 	path: '/image/list',
 	config: {handler: imageController.list}
 },{
