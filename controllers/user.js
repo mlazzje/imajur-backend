@@ -40,8 +40,9 @@ userController.prototype = (function() {
 			try
 			{
 				db.user.create({
-					// TODO
-					//XXXXXXXX: request.payload.XXXXXXXX,
+					pseudo: request.payload.pseudo,
+					mail: request.payload.mail,
+					password: request.payload.password,
 				})
 				.success(function(err, user) {
 					reply(user);
@@ -80,8 +81,15 @@ userController.prototype = (function() {
 			{
 				db.user.findOne(parseInt(request.payload.id))
 				.success(function(err, user) {
-					// TODO
-					//user.XXXXXXXX: request.payload.XXXXXXXX,
+					if (request.payload.pseudo) {
+						user.pseudo = request.payload.pseudo;
+					}
+					if (request.payload.mail) {
+						user.mail = request.payload.mail;
+					}
+					if (request.payload.password) {
+						user.password = request.payload.password;
+					}
 					user.save();
 					reply(user);
 				})

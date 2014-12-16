@@ -40,8 +40,8 @@ commentaireController.prototype = (function() {
 			try
 			{
 				db.commentaire.create({
-					// TODO
-					//XXXXXXXX: request.payload.XXXXXXXX,
+					content: request.payload.content,
+					notifie: request.payload.notifie,
 				})
 				.success(function(err, commentaire) {
 					reply(commentaire);
@@ -80,8 +80,12 @@ commentaireController.prototype = (function() {
 			{
 				db.commentaire.findOne(parseInt(request.payload.id))
 				.success(function(err, commentaire) {
-					// TODO
-					//commentaire.XXXXXXXX: request.payload.XXXXXXXX,
+					if (request.payload.content) {
+						commentaire.content = request.payload.content;
+					}
+					if (request.payload.notifie) {
+						commentaire.notifie = request.payload.notifie;
+					}
 					commentaire.save();
 					reply(commentaire);
 				})

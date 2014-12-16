@@ -40,8 +40,7 @@ voteController.prototype = (function() {
 			try
 			{
 				db.vote.create({
-					// TODO
-					//XXXXXXXX: request.payload.XXXXXXXX,
+					point: request.payload.point,
 				})
 				.success(function(err, vote) {
 					reply(vote);
@@ -80,8 +79,7 @@ voteController.prototype = (function() {
 			{
 				db.vote.findOne(parseInt(request.payload.id))
 				.success(function(err, vote) {
-					// TODO
-					//vote.XXXXXXXX: request.payload.XXXXXXXX,
+					vote.point = request.payload.point;
 					vote.save();
 					reply(vote);
 				})

@@ -80,8 +80,12 @@ ImageController.prototype = (function() {
 			{
 				db.Image.findOne(parseInt(request.payload.id))
 				.success(function(err, image) {
-					image.titre = request.payload.titre;
-					image.extension = request.payload.extension;
+					if (request.payload.titre) {
+						image.titre = request.payload.titre;
+					}
+					if (request.payload.extension) {
+						image.extension = request.payload.extension;
+					}
 					image.save();
 					reply(image);
 				})
