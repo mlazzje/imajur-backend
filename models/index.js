@@ -10,9 +10,6 @@ if (global.hasOwnProperty('db')) {
 	module.exports = global.db;
 }
 
-// Chargement des paramètres locaux
-var ;
-
 // Chargement des paramètes locaux et du module Sequelize
 var settings = require('../local_settings'),
     Sequelize = require('sequelize'),

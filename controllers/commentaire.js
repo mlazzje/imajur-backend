@@ -11,18 +11,18 @@ var db = require('../models');
 function commentaireController(){};
 
 commentaireController.prototype = (function() {
-	return
-	{
+	return {
 		list: function(request, reply) {
 			try
 			{
 				// Récupération de tous les commentaires
 				db.commentaire.findAll()
 				.success(function(err, commentaires) {
+					
 					reply(commentaires);
 				})
 				.error(function(err) {
-					// Gestion d'erreur
+					// Gestion d'errer
 					reply(err).code(418);
 				});
 			}
@@ -73,9 +73,7 @@ commentaireController.prototype = (function() {
 			{
 				db.commentaire.findOne(parseInt(request.params.id))
 				.success(function(err, commentaire) {
-					if (commentaire)
-					{
-						// Si l'on a trouvé l'objet, on le supprime
+					if (commentaire) {
 						commentaire.destroy();
 						reply("OK").code(200);
 					}
@@ -96,8 +94,6 @@ commentaireController.prototype = (function() {
 			{
 				db.commentaire.findOne(parseInt(request.payload.id))
 				.success(function(err, commentaire) {
-					// Pour chaque paramètre, s'il a été spécifié, on le met à jour
-					// Sinon, on le laisse tel quel
 					if (request.payload.content) {
 						commentaire.content = request.payload.content;
 					}

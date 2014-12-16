@@ -11,8 +11,7 @@ var db = require('../models');
 function userController(){};
 
 userController.prototype = (function() {
-	return
-	{
+	return {
 		list: function(request, reply) {
 			try
 			{

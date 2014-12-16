@@ -11,8 +11,7 @@ var db = require('../models');
 function ImageController(){};
 
 ImageController.prototype = (function() {
-	return
-	{
+	return {
 		list: function(request, reply) {
 			try
 			{
