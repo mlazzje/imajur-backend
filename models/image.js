@@ -7,6 +7,5 @@ module.exports = function(sequelize, DataTypes) {
 			type: DataTypes.STRING,
 			values: ['jpg', 'png', 'gif'],
 		},
-		date: DataTypes.DATE,
 	});
 }
