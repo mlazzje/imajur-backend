@@ -22,7 +22,7 @@ commentaireController.prototype = (function() {
 					reply(commentaires);
 				})
 				.error(function(err) {
-					// Gestion d'errer
+					// Gestion d'erreur
 					reply(err).code(418);
 				});
 			}
