@@ -128,16 +128,8 @@ ImageController.prototype = (function() {
 						reply("ERROR").code(418);
 					}
 					
-					// Génération du chemin vers le fichier image
-					var src = "/uploads/i/" + image.id + "." + image.extension;
-					
-					// Si le fichier n'existe pas, on retourne une erreur
-					if (true /*TODO*/) {
-						reply("ERROR").code(418);
-					}
-					
-					// Sinon, on retourne le contenu du fichier
-					//TODO
+					// On retourne le contenu du fichier
+					reply.file(path.join("uploads", "i", image.id + "." + image.extension));
 					
 				})
 				.error(function(err) {

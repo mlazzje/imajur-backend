@@ -7,7 +7,7 @@
 
 // Chargement du contrôleur
 var commentaireController = require('../controllers/commentaire');
-/*
+/**
 module.exports = [{
 	method: 'GET',
 	path: '/commentaire/list',

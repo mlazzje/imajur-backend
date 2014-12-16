@@ -7,7 +7,7 @@
 
 // Chargement du contrôleur
 var voteController = require('../controllers/vote');
-/*
+/**
 module.exports = [{
 	method: 'GET',
 	path: '/vote/list',
