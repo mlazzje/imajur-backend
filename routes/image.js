@@ -19,7 +19,14 @@ module.exports = [{
 },{
 	method: 'POST',
 	path: '/image/insert',
-	config: {handler: imageController.insert}
+	config: {
+        handler: imageController.insert,
+        payload:{
+            maxBytes: 209715200,
+            output:'stream',
+            parse: true
+      },
+    }
 },{
 	method: 'GET',
 	path: '/image/remove/{id}',

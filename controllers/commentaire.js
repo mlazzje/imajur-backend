@@ -13,105 +13,64 @@ function commentaireController(){};
 commentaireController.prototype = (function() {
 	return {
 		list: function(request, reply) {
-			try
-			{
-				// Récupération de tous les commentaires
-				db.commentaire.findAll()
-				.success(function(err, commentaires) {
-					
-					reply(commentaires);
-				})
-				.error(function(err) {
-					// Gestion d'errer
-					reply(err).code(418);
-				});
-			}
-			catch(exception)
-			{
-				reply(exception).code(418);
-			}
+            db.commentaire.findAll()
+            .then(function(commentaires) {
+                reply(commentaires);
+            })
+            .catch(function(err) {
+                reply(err).code(418);
+            });
 		},
 		get: function(request, reply) {
-			try
-			{
-				db.commentaire.findOne(parseInt(request.params.id))
-				.success(function(err, commentaire) {
-					reply(commentaire);
-				})
-				.error(function(err) {
-					// Gestion d'erreur
-					reply(err).code(418);
-				});
-			}
-			catch(exception)
-			{
-				reply(exception).code(418);
-			}
+            db.commentaire.findOne(parseInt(request.params.id))
+            .then(function(commentaire) {
+                reply(commentaire);
+            })
+            .catch(function(err) {
+                reply(err).code(418);
+            });
 		},
 		insert: function(request, reply) {
-			try
-			{
-				db.commentaire.create({
-					content: request.payload.content,
-					notifie: request.payload.notifie,
-				})
-				.success(function(err, commentaire) {
-					reply(commentaire);
-				})
-				.error(function(err) {
-					// Gestion d'erreur
-					reply(err).code(418);
-				});
-			}
-			catch(exception)
-			{
-				reply(exception).code(418);
-			}
+            db.commentaire.create({
+                content: request.payload.content,
+                notifie: request.payload.notifie,
+            })
+            .then(function(commentaire) {
+                reply(commentaire);
+            })
+            .catch(function(err) {
+                // Gestion d'erreur
+                reply(err).code(418);
+            });
 		},
 		remove: function(request, reply) {
-			try
-			{
-				db.commentaire.findOne(parseInt(request.params.id))
-				.success(function(err, commentaire) {
-					if (commentaire) {
-						commentaire.destroy();
-						reply("OK").code(200);
-					}
-					reply("ERROR").code(418);
-				})
-				.error(function(err) {
-					// Gestion d'erreur
-					reply(err).code(418);
-				});
-			}
-			catch(exception)
-			{
-				reply(exception).code(418);
-			}
+            db.commentaire.findOne(parseInt(request.params.id))
+            .then(function(commentaire) {
+                if (commentaire) {
+                    commentaire.destroy();
+                    reply("OK").code(200);
+                }
+                reply("ERROR").code(418);
+            })
+            .catch(function(err) {
+                reply(err).code(418);
+            });
 		},
 		update: function(request, reply) {
-			try
-			{
-				db.commentaire.findOne(parseInt(request.payload.id))
-				.success(function(err, commentaire) {
-					if (request.payload.content) {
-						commentaire.content = request.payload.content;
-					}
-					if (request.payload.notifie) {
-						commentaire.notifie = request.payload.notifie;
-					}
-					commentaire.save();
-					reply(commentaire);
-				})
-				.error(function(err) {
-					// Gestion d'erreur
-					reply(err).code(418);
-				});
-			}
-			catch(exception)
-			{
-				reply(exception).code(418);
-			}
+            db.commentaire.findOne(parseInt(request.payload.id))
+            .then(function(commentaire) {
+                if (request.payload.content) {
+                    commentaire.content = request.payload.content;
+                }
+                if (request.payload.notifie) {
+                    commentaire.notifie = request.payload.notifie;
+                }
+                commentaire.save();
+                reply(commentaire);
+            })
+            .catch(function(err) {
+                reply(err).code(418);
+            });
 		}
 	}
 })();

@@ -13,112 +13,71 @@ function userController(){};
 userController.prototype = (function() {
 	return {
 		list: function(request, reply) {
-			try
-			{
-				db.user.findAll()
-				.success(function(err, users) {
-					reply(users);
-				})
-				.error(function(err) {
-					// Gestion d'erreur
-					reply(err).code(418);
-				});
-			}
-			catch(exception)
-			{
-				reply(exception).code(418);
-			}
+            db.user.findAll()
+            .then(function(users) {
+                return reply(users);
+            })
+            .catch(function(err) {
+                return reply(err).code(418);
+            });
 		},
 		get: function(request, reply) {
-			try
-			{
-				db.user.findOne(parseInt(request.params.id))
-				.success(function(err, user) {
-					reply(user);
-				})
-				.error(function(err) {
-					// Gestion d'erreur
-					reply(err).code(418);
-				});
-			}
-			catch(exception)
-			{
-				reply(exception).code(418);
-			}
+            db.user.findOne(parseInt(request.params.id))
+            .then(function(user) {
+                return reply(user);
+            })
+            .catch(function(err) {
+                return reply(err).code(418);
+            });
 		},
 		insert: function(request, reply) {
-			try
-			{
-				db.user.create({
-					pseudo: request.payload.pseudo,
-					mail: request.payload.mail,
-					password: request.payload.password,
-				})
-				.success(function(err, user) {
-					reply(user);
-				})
-				.error(function(err) {
-					// Gestion d'erreur
-					reply(err).code(418);
-				});
-			}
-			catch(exception)
-			{
-				reply(exception).code(418);
-			}
+            db.user.create({
+                pseudo: request.payload.pseudo,
+                mail: request.payload.mail,
+                password: request.payload.password,
+            })
+            .then(function(user) {
+                return reply(user);
+            })
+            .catch(function(err) {
+                return reply(err).code(418);
+            });
 		},
 		remove: function(request, reply) {
-			try
-			{
-				// Récupération de tous les utilisateurs
-				db.user.findOne(parseInt(request.params.id))
-				.success(function(err, user) {
-					if (user)
-					{
-						// Si l'on a trouvé l'objet, on le supprime
-						user.destroy();
-						reply("OK").code(200);
-					}
-					reply("ERROR").code(418);
-				})
-				.error(function(err) {
-					// Gestion d'erreur
-					reply(err).code(418);
-				});
-			}
-			catch(exception)
-			{
-				reply(exception).code(418);
-			}
+            db.user.findOne(parseInt(request.params.id))
+            .then(function(user) {
+                if (user)
+                {
+                    // Si l'on a trouvé l'objet, on le supprime
+                    user.destroy();
+                    return reply("OK").code(200);
+                }
+                return reply("ERROR").code(418);
+            })
+            .catch(function(err) {
+                return reply(err).code(418);
+            });
 		},
 		update: function(request, reply) {
-			try
-			{
-				db.user.findOne(parseInt(request.payload.id))
-				.success(function(err, user) {
-					// Pour chaque paramètre, s'il a été spécifié, on le met à jour
-					// Sinon, on le laisse tel quel
-					if (request.payload.pseudo) {
-						user.pseudo = request.payload.pseudo;
-					}
-					if (request.payload.mail) {
-						user.mail = request.payload.mail;
-					}
-					if (request.payload.password) {
-						user.password = request.payload.password;
-					}
-					user.save();
-					reply(user);
-				})
-				.error(function(err) {
-					// Gestion d'erreur
-					reply(err).code(418);
-				});
-			}
-			catch(exception)
-			{
-				reply(exception).code(418);
-			}
+            db.user.findOne(parseInt(request.payload.id))
+            .then(function(user) {
+                // Pour chaque paramètre, s'il a été spécifié, on le met à jour
+                // Sinon, on le laisse tel quel
+                if (request.payload.pseudo) {
+                    user.pseudo = request.payload.pseudo;
+                }
+                if (request.payload.mail) {
+                    user.mail = request.payload.mail;
+                }
+                if (request.payload.password) {
+                    user.password = request.payload.password;
+                }
+                user.save();
+                return reply(user);
+            })
+            .catch(function(err) {
+                return reply(err).code(418);
+            });
 		}
 	}
 })();

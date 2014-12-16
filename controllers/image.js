@@ -8,6 +8,7 @@
 // Chargement des modèles et des modules
 var db = require('../models');
 var fs = require('fs');
+var path = require('path');
 
 function ImageController(){};
 
@@ -18,11 +19,10 @@ ImageController.prototype = (function() {
 			{
 				// Récupération de toutes les images
 				db.Image.findAll()
-				.success(function(err, images) {
+				.then(function(images) {
 					return reply(images);
 				})
-				.error(function(err) {
-					// Gestion d'erreur
+				.catch(function(err) {
 					reply(err).code(418);
 				});
 			}
@@ -36,37 +36,29 @@ ImageController.prototype = (function() {
 			{
 				db.Image.findOne(parseInt(request.params.id))
 				.success(function(err, image) {
-					reply(image);
+					return reply(image);
 				})
-				.error(function(err) {
-					// Gestion d'erreur
-					reply(err).code(418);
+				.catch(function(err) {
+					return reply(err).code(418);
 				});
 			}
 			catch(exception)
 			{
-				reply(exception).code(418);
+				return reply(exception).code(418);
 			}
 		},
 		insert: function(request, reply) {
-			try
-			{
-				db.Image.create({
-					titre: request.payload.titre,
-					extension: request.payload.extension
-				})
-				.success(function(err, image) {
-					reply(image);
-				})
-				.error(function(err) {
-					// Gestion d'erreur
-					reply(err).code(418);
-				});
-			}
-			catch(exception)
-			{
-				reply(exception).code(418);
-			}
+            db.Image.create({
+                titre: request.payload.titre,
+                extension: request.payload.extension
+            })
+            .then(function(image) {
+                request.payload["image"].pipe(fs.createWriteStream(path.join("uploads", "i", image.id + "." + image.extension)));
+                return reply(image).code(201);
+            })
+            .catch(function(err) {
+                return reply(err);
+            });
 		},
 		remove: function(request, reply) {
 			try
@@ -81,8 +73,7 @@ ImageController.prototype = (function() {
 					}
 					reply("ERROR").code(418);
 				})
-				.error(function(err) {
-					// Gestion d'erreur
+				.catch(function(err) {
 					reply(err).code(418);
 				});
 			}
@@ -107,8 +98,7 @@ ImageController.prototype = (function() {
 					image.save();
 					reply(image);
 				})
-				.error(function(err) {
-					// Gestion d'erreur
+				.catch(function(err) {
 					reply(err).code(418);
 				});
 			}
@@ -118,29 +108,17 @@ ImageController.prototype = (function() {
 			}
 		},
 		file: function(request, reply) {
-			try
-			{
-				db.Image.findOne(parseInt(request.params.id))
-				.success(function(err, image) {
-					
-					if (!image) {
-						// Gestion d'erreur
-						reply("ERROR").code(418);
-					}
-					
-					// On retourne le contenu du fichier
-					reply.file(path.join("uploads", "i", image.id + "." + image.extension));
-					
-				})
-				.error(function(err) {
-					// Gestion d'erreur
-					reply(err).code(418);
-				});
-			}
-			catch(exception)
-			{
-				reply(exception).code(418);
-			}
+            db.Image.findOne(parseInt(request.params.id))
+            .then(function(image) {
+                if (!image) {
+                    reply("ERROR").code(418);
+                }
+
+                return reply.file(path.join("uploads", "i", image.id + "." + image.extension));
+            })
+            .catch(function(err) {
+                return reply(err).code(418);
+            });
 		}
 	}
 })();
