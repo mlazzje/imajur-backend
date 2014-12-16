@@ -1,5 +1,4 @@
 var db = require('../models');
-var uuidGenerator = require('node-uuid');
 
 function ImageController(){};
 
@@ -11,10 +10,9 @@ ImageController.prototype = (function() {
 			});
 		},
 		get: function(request, reply) {
-			db.Image.findAll()
-			.where({uuid: request.params.id})
-			.complete(function(err, users) {
-				reply(users);
+			db.Image.findOne(parseInt(request.params.id))
+			.complete(function(err, user) {
+				reply(user);
 			});
 		},
 		insert: function(request, reply) {
@@ -26,10 +24,21 @@ ImageController.prototype = (function() {
 			});
 		},
 		remove: function(request, reply) {
-			reply("youyou remove");
+			db.Image.delete({
+				id: parseInt(request.params.id)
+			})
+			.complete(function(err) {
+				reply.redirect("/image/");
+			});
 		},
 		update: function(request, reply) {
-			reply("youyou update");
+			db.Image.findOne(parseInt(request.params.id))
+			.complete(function(err, user) {
+				user.titre = request.payload.titre;
+				user.extension = request.payload.extension;
+				user.save();
+				reply(user);
+			});
 		}
 	}
 })();
