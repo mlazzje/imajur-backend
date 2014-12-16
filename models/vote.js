@@ -1,6 +1,9 @@
 module.exports = function (sequelize, DataTypes) {
 	return sequelize.define('vote', {
-		id: DataTypes.UUID,
+		id: {
+			type: DataTypes.UUID,
+			defaultValue: sequelize.UUIDV1
+		},
 		//id_user
 		//id_image
 		point: {
