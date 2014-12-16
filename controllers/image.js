@@ -12,7 +12,7 @@ ImageController.prototype = (function() {
 		},
 		get: function(request, reply) {
 			db.Image.findAll()
-			.where({id: parseInt(request.params.id)})
+			.where({uuid: request.params.id})
 			.complete(function(err, users) {
 				reply(users);
 			});
