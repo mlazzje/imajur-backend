@@ -1,5 +1,13 @@
-var voteController = require('../controllers/vote');
+/*
+	PROJET : Imjur (Server)
+	GROUPE : DEGAINE Mathieu, GILLET Eric, LE DUFF Boris, LESBROS Maxime, ROSENSTIEHL Quentin
+	
+	Fichier de routes (contrôleur 'vote')
+*/
 
+// Chargement du contrôleur
+var voteController = require('../controllers/vote');
+/**
 module.exports = [{
 	method: 'GET',
 	path: '/vote/list',
@@ -21,3 +29,4 @@ module.exports = [{
 	path: '/vote/update',
 	config: {handler: voteController.update}
 }];
+*/

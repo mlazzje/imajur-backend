@@ -1,5 +1,13 @@
-var userController = require('../controllers/user');
+/*
+	PROJET : Imjur (Server)
+	GROUPE : DEGAINE Mathieu, GILLET Eric, LE DUFF Boris, LESBROS Maxime, ROSENSTIEHL Quentin
+	
+	Fichier de routes (contrôleur 'user')
+*/
 
+// Chargement du contrôleur
+var userController = require('../controllers/user');
+/**
 module.exports = [{
 	method: 'GET',
 	path: '/user/list',
@@ -21,3 +29,4 @@ module.exports = [{
 	path: '/user/update',
 	config: {handler: userController.update}
 }];
+*/

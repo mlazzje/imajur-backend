@@ -1,3 +1,11 @@
+/*
+	PROJET : Imjur (Server)
+	GROUPE : DEGAINE Mathieu, GILLET Eric, LE DUFF Boris, LESBROS Maxime, ROSENSTIEHL Quentin
+	
+	Contrôleur 'commentaire'
+*/
+
+// Chargement des modèles
 var db = require('../models');
 
 function commentaireController(){};
@@ -7,11 +15,14 @@ commentaireController.prototype = (function() {
 		list: function(request, reply) {
 			try
 			{
+				// Récupération de tous les commentaires
 				db.commentaire.findAll()
 				.success(function(err, commentaires) {
+					
 					reply(commentaires);
 				})
 				.error(function(err) {
+					// Gestion d'errer
 					reply(err).code(418);
 				});
 			}
@@ -28,6 +39,7 @@ commentaireController.prototype = (function() {
 					reply(commentaire);
 				})
 				.error(function(err) {
+					// Gestion d'erreur
 					reply(err).code(418);
 				});
 			}
@@ -40,13 +52,14 @@ commentaireController.prototype = (function() {
 			try
 			{
 				db.commentaire.create({
-					// TODO
-					//XXXXXXXX: request.payload.XXXXXXXX,
+					content: request.payload.content,
+					notifie: request.payload.notifie,
 				})
 				.success(function(err, commentaire) {
 					reply(commentaire);
 				})
 				.error(function(err) {
+					// Gestion d'erreur
 					reply(err).code(418);
 				});
 			}
@@ -67,6 +80,7 @@ commentaireController.prototype = (function() {
 					reply("ERROR").code(418);
 				})
 				.error(function(err) {
+					// Gestion d'erreur
 					reply(err).code(418);
 				});
 			}
@@ -80,12 +94,17 @@ commentaireController.prototype = (function() {
 			{
 				db.commentaire.findOne(parseInt(request.payload.id))
 				.success(function(err, commentaire) {
-					// TODO
-					//commentaire.XXXXXXXX: request.payload.XXXXXXXX,
+					if (request.payload.content) {
+						commentaire.content = request.payload.content;
+					}
+					if (request.payload.notifie) {
+						commentaire.notifie = request.payload.notifie;
+					}
 					commentaire.save();
 					reply(commentaire);
 				})
 				.error(function(err) {
+					// Gestion d'erreur
 					reply(err).code(418);
 				});
 			}

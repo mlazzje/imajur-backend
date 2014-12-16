@@ -1,7 +1,15 @@
+/*
+	PROJET : Imjur (Server)
+	GROUPE : DEGAINE Mathieu, GILLET Eric, LE DUFF Boris, LESBROS Maxime, ROSENSTIEHL Quentin
+	
+	Modèle 'image'
+*/
+
 module.exports = function(sequelize, DataTypes) {
 	return sequelize.define('image', {
-		titre: DataTypes.STRING,
-		extension: {
+		//id_user
+		titre: DataTypes.STRING,			// Titre de l'image
+		extension: {						// Extension du fichier
 			type: DataTypes.STRING,
 			values: ['jpg', 'png', 'gif'],
 		},

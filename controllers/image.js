@@ -1,4 +1,13 @@
+/*
+	PROJET : Imjur (Server)
+	GROUPE : DEGAINE Mathieu, GILLET Eric, LE DUFF Boris, LESBROS Maxime, ROSENSTIEHL Quentin
+	
+	Contrôleur 'image'
+*/
+
+// Chargement des modèles et des modules
 var db = require('../models');
+var fs = require('fs');
 
 function ImageController(){};
 
@@ -7,12 +16,14 @@ ImageController.prototype = (function() {
 		list: function(request, reply) {
 			try
 			{
+				// Récupération de toutes les images
 				db.Image.findAll()
 				.success(function(err, images) {
 					return reply(images);
 				})
 				.error(function(err) {
-					return reply(err).code(418);
+					// Gestion d'erreur
+					reply(err).code(418);
 				});
 			}
 			catch(exception)
@@ -28,6 +39,7 @@ ImageController.prototype = (function() {
 					reply(image);
 				})
 				.error(function(err) {
+					// Gestion d'erreur
 					reply(err).code(418);
 				});
 			}
@@ -47,6 +59,7 @@ ImageController.prototype = (function() {
 					reply(image);
 				})
 				.error(function(err) {
+					// Gestion d'erreur
 					reply(err).code(418);
 				});
 			}
@@ -60,13 +73,16 @@ ImageController.prototype = (function() {
 			{
 				db.Image.findOne(parseInt(request.params.id))
 				.success(function(err, image) {
-					if (image) {
+					if (image)
+					{
+						// Si l'on a trouvé l'objet, on le supprime
 						image.destroy();
 						reply("OK").code(200);
 					}
 					reply("ERROR").code(418);
 				})
 				.error(function(err) {
+					// Gestion d'erreur
 					reply(err).code(418);
 				});
 			}
@@ -80,12 +96,44 @@ ImageController.prototype = (function() {
 			{
 				db.Image.findOne(parseInt(request.payload.id))
 				.success(function(err, image) {
-					image.titre = request.payload.titre;
-					image.extension = request.payload.extension;
+					// Pour chaque paramètre, s'il a été spécifié, on le met à jour
+					// Sinon, on le laisse tel quel
+					if (request.payload.titre) {
+						image.titre = request.payload.titre;
+					}
+					if (request.payload.extension) {
+						image.extension = request.payload.extension;
+					}
 					image.save();
 					reply(image);
 				})
 				.error(function(err) {
+					// Gestion d'erreur
+					reply(err).code(418);
+				});
+			}
+			catch(exception)
+			{
+				reply(exception).code(418);
+			}
+		},
+		file: function(request, reply) {
+			try
+			{
+				db.Image.findOne(parseInt(request.params.id))
+				.success(function(err, image) {
+					
+					if (!image) {
+						// Gestion d'erreur
+						reply("ERROR").code(418);
+					}
+					
+					// On retourne le contenu du fichier
+					reply.file(path.join("uploads", "i", image.id + "." + image.extension));
+					
+				})
+				.error(function(err) {
+					// Gestion d'erreur
 					reply(err).code(418);
 				});
 			}
