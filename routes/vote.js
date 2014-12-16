@@ -1,3 +1,11 @@
+/*
+	PROJET : Imjur (Server)
+	GROUPE : DEGAINE Mathieu, GILLET Eric, LE DUFF Boris, LESBROS Maxime, ROSENSTIEHL Quentin
+	
+	Fichier de routes (contrôleur 'vote')
+*/
+
+// Chargement du contrôleur
 var voteController = require('../controllers/vote');
 
 module.exports = [{

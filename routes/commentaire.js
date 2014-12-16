@@ -1,3 +1,11 @@
+/*
+	PROJET : Imjur (Server)
+	GROUPE : DEGAINE Mathieu, GILLET Eric, LE DUFF Boris, LESBROS Maxime, ROSENSTIEHL Quentin
+	
+	Fichier de routes (contrôleur 'commentaire')
+*/
+
+// Chargement du contrôleur
 var commentaireController = require('../controllers/commentaire');
 
 module.exports = [{
