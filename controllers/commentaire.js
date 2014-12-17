@@ -71,7 +71,16 @@ commentaireController.prototype = (function() {
             .catch(function(err) {
                 reply(err).code(418);
             });
-		}
+		},
+        byImage: function(request, reply) {
+            db.commentaire.find({'where': {'imageId': request.params.id}})
+            .then(function(commentaires) {
+                return reply(commentaires);
+            })
+            .error(function(err) {
+                return reply(err).err(404);
+            })
+        }
 	}
 })();
 
