@@ -7,6 +7,7 @@
 
 // Chargement des modèles
 var db = require('../models');
+var bcrypt = require('bcrypt')
 
 function userController(){};
 
@@ -30,11 +31,28 @@ userController.prototype = (function() {
                 return reply(err).code(418);
             });
 		},
+		validate: function(request, reply) {
+            db.user.findOne({'where' : {'pseudo': request.params.pseudo}})
+            .then(function(user) {
+                if (!user) {
+                    return callback(null, false);
+                }
+                bcrypt.compare(password, user.password, function(err, isValid) {
+                    if(isValid) {
+                        return reply(user);
+                    }
+                    return reply(err).code(401);
+                });
+            })
+            .catch(function(err) {
+                return reply(err).code(418);
+            });
+		},
 		insert: function(request, reply) {
             db.user.create({
                 pseudo: request.payload.pseudo,
                 mail: request.payload.mail,
-                password: request.payload.password,
+                password: bcrypt.hashSync(requqest.payload.password),
             })
             .then(function(user) {
                 return reply(user);
@@ -70,7 +88,7 @@ userController.prototype = (function() {
                     user.mail = request.payload.mail;
                 }
                 if (request.payload.password) {
-                    user.password = request.payload.password;
+                    user.password = bcrypt.hashSync(request.payload.password);
                 }
                 user.save();
                 return reply(user);

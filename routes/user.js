@@ -17,6 +17,10 @@ module.exports = [{
 	config: {handler: userController.get}
 },{
 	method: 'POST',
+	path: '/user/login',
+	config: {handler: userController.validate}
+},{
+	method: 'POST',
 	path: '/user/insert',
 	config: {handler: userController.insert}
 },{
