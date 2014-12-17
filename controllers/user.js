@@ -14,7 +14,7 @@ function userController(){};
 userController.prototype = (function() {
 	return {
 		list: function(request, reply) {
-            db.user.findAll()
+            db.User.findAll()
             .then(function(users) {
                 return reply(users);
             })
@@ -23,7 +23,7 @@ userController.prototype = (function() {
             });
 		},
 		get: function(request, reply) {
-            db.user.findOne(parseInt(request.params.id))
+            db.User.findOne(parseInt(request.params.id))
             .then(function(user) {
                 return reply(user);
             })
@@ -32,10 +32,10 @@ userController.prototype = (function() {
             });
 		},
 		validate: function(request, reply) {
-            db.user.findOne({'where' : {'pseudo': request.params.pseudo}})
+            db.User.findOne({'where' : {'pseudo': request.params.pseudo}})
             .then(function(user) {
                 if (!user) {
-                    return callback(null, false);
+                    return reply(null, false);
                 }
                 bcrypt.compare(password, user.password, function(err, isValid) {
                     if(isValid) {
@@ -49,10 +49,10 @@ userController.prototype = (function() {
             });
 		},
 		insert: function(request, reply) {
-            db.user.create({
+            db.User.create({
                 pseudo: request.payload.pseudo,
                 mail: request.payload.mail,
-                password: bcrypt.hashSync(requqest.payload.password),
+                password: bcrypt.hashSync(request.payload.password),
             })
             .then(function(user) {
                 return reply(user);
@@ -62,7 +62,7 @@ userController.prototype = (function() {
             });
 		},
 		remove: function(request, reply) {
-            db.user.findOne(parseInt(request.params.id))
+            db.User.findOne(parseInt(request.params.id))
             .then(function(user) {
                 if (user)
                 {
@@ -77,7 +77,7 @@ userController.prototype = (function() {
             });
 		},
 		update: function(request, reply) {
-            db.user.findOne(parseInt(request.payload.id))
+            db.User.findOne(parseInt(request.payload.id))
             .then(function(user) {
                 // Pour chaque paramètre, s'il a été spécifié, on le met à jour
                 // Sinon, on le laisse tel quel
