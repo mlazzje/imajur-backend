@@ -32,12 +32,12 @@ userController.prototype = (function() {
             });
 		},
 		validate: function(request, reply) {
-            db.User.findOne({'where' : {'pseudo': request.params.pseudo}})
+            db.User.findOne({'where' : {'pseudo': request.payload.pseudo}})
             .then(function(user) {
                 if (!user) {
                     return reply(null, false);
                 }
-                bcrypt.compare(password, user.password, function(err, isValid) {
+                bcrypt.compare(request.payload.password, user.password, function(err, isValid) {
                     if(isValid) {
                         return reply(user);
                     }
@@ -52,7 +52,7 @@ userController.prototype = (function() {
             db.User.create({
                 pseudo: request.payload.pseudo,
                 mail: request.payload.mail,
-                password: bcrypt.hashSync(request.payload.password),
+                password: bcrypt.hashSync(request.payload.password, 8),
             })
             .then(function(user) {
                 return reply(user);
