@@ -34,9 +34,12 @@ ImageController.prototype = (function() {
             });
 		},
 		byUser: function(request, reply) {
-            db.Image.find(parseInt(request.params.id))
-            .then(function(image) {
-                return reply(image);
+            db.User.find({include: [db.Image], where: {id: parseInt(request.params.id)}})
+            .then(function(user) {
+                if(!user) {
+                    return("User not found").code(404);
+                }
+                return reply(user.images);
             })
             .catch(function(err) {
                 return reply(err).code(418);
@@ -45,7 +48,7 @@ ImageController.prototype = (function() {
 		insert: function(request, reply) {
             db.Image.create({
                 titre: request.payload.titre,
-                extension: request.payload.extension
+                extension: request.payload.image.hapi.filename.split('.').pop()
             })
             .then(function(image) {
                 request.payload["image"].pipe(fs.createWriteStream(path.join("uploads", "i", image.id + "." + image.extension)));
