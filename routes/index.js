@@ -2,10 +2,9 @@
 	PROJET : Imjur (Server)
 	GROUPE : DEGAINE Mathieu, GILLET Eric, LE DUFF Boris, LESBROS Maxime, ROSENSTIEHL Quentin
 	
-	Fichier de routes (chargement des fichiers de routes spécifiques)
+	Index des routes (chargement des fichiers de routes spécifiques)
 */
 
-// Chargement des modules utilisés
 var path = require('path');
 var fs = require('fs');
 var _ = require('underscore');
@@ -21,10 +20,12 @@ fs.readdirSync(__dirname)
 .forEach(function (file) {
 	// Pour chaque fichier de routes spécifiques, ajout des routes
 	var mod = require(path.join(__dirname, file));
+
+    // Définition de l'entête CORS pour indiquer aux navigateurs
+    // qu'il est possible de réaliser des requêtes HTTP sur ce server
+    // depuis n'importe quelle origine (page web)
     for (var i = 0; i < mod.length; i++) {
         mod[i].config.cors = true;
     }
     module.exports = module.exports.concat(mod)
-	//Array.prototype.push.apply(module.exports, mod);
-	//_.extend(module.exports, mod);
 });

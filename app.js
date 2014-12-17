@@ -8,19 +8,24 @@
 // Chargement du framework, des modèles et des routes
 var hapi = require('hapi')
 , db     = require('./models')
-, routes = require('./routes');
+, config = require('./local_settings');
 
 // Synchronisation de la base de données
-db.sequelize.sync().complete(function(err)
-{
+db.sequelize.sync().complete(function(err){
     if (err) {
         throw err[0]
     } else {
         var server = new hapi.Server();
-        server.connection({port: 3000});
-        server.route(routes);
-		
-		// Lancement du serveur
+        server.connection({port: config.port});
+        server.register(require('hapi-auth-cookie'), function (err) {
+            console.log(err);
+            server.auth.strategy('session', 'cookie', {
+                password: config.secret,
+                cookie: 'sid',
+                isSecure: false
+            });
+        });
+        server.route(require('./routes'));
         server.start(function () {
             console.log("Listening on 3000");
         });

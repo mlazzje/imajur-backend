@@ -39,6 +39,7 @@ userController.prototype = (function() {
                 }
                 bcrypt.compare(request.payload.password, user.password, function(err, isValid) {
                     if(isValid) {
+                        request.auth.session.set(user);
                         return reply(user);
                     }
                     return reply(err).code(401);
@@ -48,6 +49,10 @@ userController.prototype = (function() {
                 return reply(err).code(418);
             });
 		},
+        logout: function(request, reply) {
+            request.auth.session.clear();
+            return reply("OK");
+        },
 		insert: function(request, reply) {
             db.User.create({
                 pseudo: request.payload.pseudo,

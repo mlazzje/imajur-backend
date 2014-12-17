@@ -10,7 +10,10 @@ var userController = require('../controllers/user');
 module.exports = [{
 	method: 'GET',
 	path: '/user/list',
-	config: {handler: userController.list}
+	config: {
+        handler: userController.list,
+        auth: 'session' 
+    }
 },{
 	method: 'GET',
 	path: '/user/get/{id}',
@@ -18,7 +21,22 @@ module.exports = [{
 },{
 	method: 'POST',
 	path: '/user/login',
-	config: {handler: userController.validate}
+	config: {
+        handler: userController.validate,
+        auth: {
+            mode: 'try',
+            strategy: 'session'
+        },
+        plugins: {
+            'hapi-auth-cookie': {
+                redirectTo: false
+            }
+        }
+    }
+},{
+	method: 'GET',
+	path: '/user/logout',
+	config: {handler: userController.logout}
 },{
 	method: 'POST',
 	path: '/user/insert',
