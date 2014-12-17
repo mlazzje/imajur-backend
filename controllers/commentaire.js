@@ -7,13 +7,14 @@
 
 // Chargement des modèles
 var db = require('../models');
+var async = require('async');
 
 function commentaireController(){};
 
 commentaireController.prototype = (function() {
 	return {
 		list: function(request, reply) {
-            db.commentaire.findAll()
+            db.Commentaire.findAll()
             .then(function(commentaires) {
                 reply(commentaires);
             })
@@ -22,7 +23,7 @@ commentaireController.prototype = (function() {
             });
 		},
 		get: function(request, reply) {
-            db.commentaire.findOne(parseInt(request.params.id))
+            db.Commentaire.findOne(parseInt(request.params.id))
             .then(function(commentaire) {
                 reply(commentaire);
             })
@@ -31,20 +32,28 @@ commentaireController.prototype = (function() {
             });
 		},
 		insert: function(request, reply) {
-            db.commentaire.create({
-                content: request.payload.content,
-                notifie: request.payload.notifie,
-            })
-            .then(function(commentaire) {
-                reply(commentaire);
-            })
-            .catch(function(err) {
-                // Gestion d'erreur
-                reply(err).code(418);
+            async.auto({
+            create: function(callback) {
+                db.Commentaire.create({
+                    content: request.payload.content,
+                    notifie: request.payload.notifie,
+                }).done(callback)
+            },
+            findImage: function(callback) {
+                db.Image.find(request.payload.image).done(callback)
+            },
+            setComment: ['findImage','create', function(callback, results){
+                results.findImage.addCommentaire(results.create).done(callback);
+            }]
+            }, function(err, results) {
+                if(err) {
+                    return reply(err).code(418);
+                }
+                return reply(results.create)
             });
 		},
 		remove: function(request, reply) {
-            db.commentaire.findOne(parseInt(request.params.id))
+            db.Commentaire.findOne(parseInt(request.params.id))
             .then(function(commentaire) {
                 if (commentaire) {
                     commentaire.destroy();
@@ -57,7 +66,7 @@ commentaireController.prototype = (function() {
             });
 		},
 		update: function(request, reply) {
-            db.commentaire.findOne(parseInt(request.payload.id))
+            db.Commentaire.findOne(parseInt(request.payload.id))
             .then(function(commentaire) {
                 if (request.payload.content) {
                     commentaire.content = request.payload.content;
@@ -73,7 +82,7 @@ commentaireController.prototype = (function() {
             });
 		},
         byImage: function(request, reply) {
-            db.commentaire.find({'where': {'imageId': request.params.id}})
+            db.Commentaire.findAll({'where': {'imageId': request.params.id}})
             .then(function(commentaires) {
                 return reply(commentaires);
             })

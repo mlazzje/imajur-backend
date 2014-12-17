@@ -21,6 +21,9 @@ fs.readdirSync(__dirname)
 .forEach(function (file) {
 	// Pour chaque fichier de routes spécifiques, ajout des routes
 	var mod = require(path.join(__dirname, file));
+    for (var i = 0; i < mod.length; i++) {
+        mod[i].config.cors = true;
+    }
     module.exports = module.exports.concat(mod)
 	//Array.prototype.push.apply(module.exports, mod);
 	//_.extend(module.exports, mod);
