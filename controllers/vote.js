@@ -7,22 +7,23 @@
 
 // Chargement des modèles
 var db = require('../models');
+var async = require('async');
 
 function voteController(){};
 
 voteController.prototype = (function() {
 	return {
 		list: function(request, reply) {
-            db.vote.findAll()
+            db.Vote.findAll()
             .then(function(votes) {
-                reply(votes);
+                return reply(votes);
             })
-            .except(function(err) {
-                reply(err).code(418);
+            .catch(function(err) {
+                return reply(err).code(418);
             });
 		},
 		get: function(request, reply) {
-            db.vote.findOne(parseInt(request.params.id))
+            db.Vote.findOne({where: {id: parseInt(request.params.id)}})
             .then(function(vote) {
                 reply(vote);
             })
@@ -31,40 +32,50 @@ voteController.prototype = (function() {
             });
 		},
 		insert: function(request, reply) {
-            db.vote.create({
-                point: request.payload.point,
-            })
-            .then(function(vote) {
-                reply(vote);
-            })
-            .error(function(err) {
-                // Gestion d'erreur
-                reply(err).code(418);
+            if(request.payload.point != -1 && request.payload.point != 1) {
+                return reply("Invalid vote value").code(403);
+            }
+            async.auto({
+                create: function(callback) {
+                    db.Vote.create({
+                        point: request.payload.point
+                    }).done(callback);
+                },
+                find: function(callback) {
+                    db.Image.findOne(parseInt(request.payload.image)).done(callback);
+                },
+                update: ['create', 'find', function(callback, results) {
+                    results.find.addVote(results.create).done(callback);
+                }],
+            }, function(err, results) {
+                if(err) {
+                    return reply(err).code(418);
+                }
+                return reply(results.create);
             });
 		},
 		remove: function(request, reply) {
-            db.vote.findOne(parseInt(request.params.id))
+            db.Vote.findOne(parseInt(request.params.id))
             .then(function(vote) {
                 if (vote)
                 {
                     vote.destroy();
-                    reply("OK").code(200);
+                    return reply("OK").code(200);
                 }
-                reply("ERROR").code(418);
+                return reply("ERROR").code(418);
             })
             .catch(function(err) {
                 reply(err).code(418);
             });
 		},
 		update: function(request, reply) {
-            db.vote.findOne(parseInt(request.payload.id))
+            db.Vote.findOne(parseInt(request.payload.id))
             .then(function(err, vote) {
-                vote.point = request.payload.point;
+                vote.point = parseInt(request.payload.point);
                 vote.save();
                 reply(vote);
             })
             .catch(function(err) {
-                // Gestion d'erreur
                 reply(err).code(418);
             });
 		}

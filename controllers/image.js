@@ -15,37 +15,32 @@ function ImageController(){};
 ImageController.prototype = (function() {
 	return {
 		list: function(request, reply) {
-			try
-			{
-				// Récupération de toutes les images
-				db.Image.findAll()
-				.then(function(images) {
-					return reply(images);
-				})
-				.catch(function(err) {
-					reply(err).code(418);
-				});
-			}
-			catch(exception)
-			{
-				return reply(exception).code(418);
-			}
+            db.Image.findAll({include: [db.Commentaire, db.Vote]})
+            .then(function(images) {
+                return reply(images);
+            })
+            .catch(function(err) {
+                reply(err).code(418);
+            });
 		},
 		get: function(request, reply) {
-			try
-			{
-				db.Image.findOne(parseInt(request.params.id))
-				.success(function(err, image) {
-					return reply(image);
-				})
-				.catch(function(err) {
-					return reply(err).code(418);
-				});
-			}
-			catch(exception)
-			{
-				return reply(exception).code(418);
-			}
+            //db.Image.findOne(parseInt(request.params.id), {include: ['Commentaire', 'Vote']})
+            db.Image.findOne({where: {id: parseInt(request.params.id)}, include: [db.Commentaire, db.Vote]})
+            .then(function(image) {
+                return reply(image);
+            })
+            .catch(function(err) {
+                return reply(err).code(418);
+            });
+		},
+		byUser: function(request, reply) {
+            db.Image.find(parseInt(request.params.id))
+            .then(function(image) {
+                return reply(image);
+            })
+            .catch(function(err) {
+                return reply(err).code(418);
+            });
 		},
 		insert: function(request, reply) {
             db.Image.create({

@@ -16,6 +16,10 @@ module.exports = [{
 	path: '/commentaire/get/{id}',
 	config: {handler: commentaireController.get}
 },{
+	method: 'GET',
+	path: '/commentaire/byimage/{id}',
+	config: {handler: commentaireController.byImage}
+},{
 	method: 'POST',
 	path: '/commentaire/insert',
 	config: {handler: commentaireController.insert}

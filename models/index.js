@@ -34,10 +34,13 @@ global.db = {
 };
 
 // Définition des relations
-global.db.User.hasMany(global.db.Image, {as: 'Images'});
-global.db.User.hasMany(global.db.Commentaire, {as: 'Commentaires'});
-global.db.User.hasMany(global.db.Vote, {as: 'Votes'});
-global.db.Image.hasMany(global.db.Commentaire, {as: 'Commentaires'});
-global.db.Image.hasMany(global.db.Vote, {as: 'Votes'});
+global.db.User.hasMany(global.db.Image);
+global.db.User.hasMany(global.db.Commentaire);
+global.db.User.hasMany(global.db.Vote);
+global.db.Image.hasMany(global.db.Commentaire);
+global.db.Image.hasMany(global.db.Vote);
+global.db.Image.belongsTo(global.db.User);
+global.db.Commentaire.belongsTo(global.db.Image);
+
 
 module.exports = global.db;
