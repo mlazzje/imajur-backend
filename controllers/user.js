@@ -40,7 +40,7 @@ userController.prototype = (function() {
                 bcrypt.compare(request.payload.password, user.password, function(err, isValid) {
                     if(isValid) {
                         request.auth.session.set(user);
-                        return reply(user);
+                        return reply(user).state('user', {pseudo: user.pseudo});
                     }
                     return reply(err).code(401);
                 });
@@ -51,7 +51,7 @@ userController.prototype = (function() {
 		},
         logout: function(request, reply) {
             request.auth.session.clear();
-            return reply("OK");
+            return reply("OK").state('user', null);
         },
 		insert: function(request, reply) {
             db.User.create({
@@ -60,6 +60,9 @@ userController.prototype = (function() {
                 password: bcrypt.hashSync(request.payload.password, 8),
             })
             .then(function(user) {
+                if(!user) {
+                    return reply(false).code(401);
+                }
                 return reply(user);
             })
             .catch(function(err) {

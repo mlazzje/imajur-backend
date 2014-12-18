@@ -25,6 +25,11 @@ db.sequelize.sync().complete(function(err){
                 isSecure: false
             });
         });
+        server.state('user', {
+            ttl: null,
+            isSecure: false,
+            encoding: 'base64json'
+        });
         server.route(require('./routes'));
         server.start(function () {
             console.log("Listening on 3000");
