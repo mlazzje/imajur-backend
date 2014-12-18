@@ -1,7 +1,7 @@
 module.exports = {
-    db_name: "imajur",
-    login: "user",
-    password: null,
+    db_name: "imjur",
+    login: "imjur",
+    password: "imjur",
     port: 3000,
     secret: "changeme"
 }
