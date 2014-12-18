@@ -41,6 +41,9 @@ global.db.Image.hasMany(global.db.Commentaire);
 global.db.Image.hasMany(global.db.Vote);
 global.db.Image.belongsTo(global.db.User);
 global.db.Commentaire.belongsTo(global.db.Image);
+global.db.Commentaire.belongsTo(global.db.User);
+global.db.Vote.belongsTo(global.db.User);
+global.db.Vote.belongsTo(global.db.Image);
 
 
 module.exports = global.db;

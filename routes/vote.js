@@ -16,6 +16,10 @@ module.exports = [{
 	path: '/vote/get/{id}',
 	config: {handler: voteController.get}
 },{
+	method: 'GET',
+	path: '/vote/byimage/{id}',
+	config: {handler: voteController.byImage}
+},{
 	method: 'POST',
 	path: '/vote/insert',
 	config: {
