@@ -35,7 +35,7 @@ userController.prototype = (function() {
             db.User.findOne({'where' : {'pseudo': request.payload.pseudo}})
             .then(function(user) {
                 if (!user) {
-                    return reply(null, false);
+                    return reply("Wrong user").code(401);
                 }
                 bcrypt.compare(request.payload.password, user.password, function(err, isValid) {
                     if(isValid) {
@@ -60,9 +60,6 @@ userController.prototype = (function() {
                 password: bcrypt.hashSync(request.payload.password, 8),
             })
             .then(function(user) {
-                if(!user) {
-                    return reply(false).code(401);
-                }
                 return reply(user);
             })
             .catch(function(err) {

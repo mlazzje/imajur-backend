@@ -9,18 +9,19 @@
 var db = require('../models');
 var fs = require('fs');
 var path = require('path');
+var async = require('async');
 
 function ImageController(){};
 
 ImageController.prototype = (function() {
 	return {
 		list: function(request, reply) {
-            db.Image.findAll({include: [db.Commentaire, db.Vote]})
+            db.Image.findAll()
             .then(function(images) {
                 return reply(images);
             })
-            .catch(function(err) {
-                reply(err).code(418);
+            .catch(function() {
+                reply(err).code(500);
             });
 		},
 		get: function(request, reply) {
@@ -81,29 +82,22 @@ ImageController.prototype = (function() {
 			}
 		},
 		update: function(request, reply) {
-			try
-			{
-				db.Image.findOne(parseInt(request.payload.id))
-				.success(function(err, image) {
-					// Pour chaque paramètre, s'il a été spécifié, on le met à jour
-					// Sinon, on le laisse tel quel
-					if (request.payload.titre) {
-						image.titre = request.payload.titre;
-					}
-					if (request.payload.extension) {
-						image.extension = request.payload.extension;
-					}
-					image.save();
-					reply(image);
-				})
-				.catch(function(err) {
-					reply(err).code(418);
-				});
-			}
-			catch(exception)
-			{
-				reply(exception).code(418);
-			}
+            db.Image.findOne(parseInt(request.payload.id))
+            .then(function(image) {
+                // Pour chaque paramètre, s'il a été spécifié, on le met à jour
+                // Sinon, on le laisse tel quel
+                if (request.payload.titre) {
+                    image.titre = request.payload.titre;
+                }
+                if (request.payload.extension) {
+                    image.extension = request.payload.extension;
+                }
+                image.save();
+                reply(image);
+            })
+            .catch(function(err) {
+                reply(err).code(418);
+            });
 		},
 		file: function(request, reply) {
             db.Image.findOne(parseInt(request.params.id))
@@ -111,7 +105,6 @@ ImageController.prototype = (function() {
                 if (!image) {
                     reply("ERROR").code(418);
                 }
-
                 return reply.file(path.join("uploads", "i", image.id + "." + image.extension));
             })
             .catch(function(err) {
