@@ -25,7 +25,11 @@ fs.readdirSync(__dirname)
     // qu'il est possible de réaliser des requêtes HTTP sur ce server
     // depuis n'importe quelle origine (page web)
     for (var i = 0; i < mod.length; i++) {
-        mod[i].config.cors = true;
+        //mod[i].config.cors = true;
+        mod[i].config.cors = {
+            origin: ['*'],
+            credentials: true
+        };
     }
     module.exports = module.exports.concat(mod)
 });
