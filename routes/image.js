@@ -17,6 +17,10 @@ module.exports = [{
 	path: '/image/get/{id}',
 	config: {handler: imageController.get}
 },{
+	method: 'GET',
+	path: '/image/byuser/{id}',
+	config: {handler: imageController.byUser}
+},{
 	method: 'POST',
 	path: '/image/insert',
 	config: {
