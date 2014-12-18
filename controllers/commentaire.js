@@ -42,8 +42,14 @@ commentaireController.prototype = (function() {
             findImage: function(callback) {
                 db.Image.find(request.payload.image).done(callback)
             },
-            setComment: ['findImage','create', function(callback, results){
+            findUser: function(callback) {
+                db.User.find(request.auth.credentials.id).done(callback)
+            },
+            setImage: ['findImage','create', function(callback, results){
                 results.findImage.addCommentaire(results.create).done(callback);
+            }],
+            setUser: ['findUser', 'create', function(callback, results) {
+                results.findUser.addCommentaire(results.create).done(callback);
             }]
             }, function(err, results) {
                 if(err) {

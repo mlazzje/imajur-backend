@@ -41,11 +41,17 @@ voteController.prototype = (function() {
                         point: request.payload.point
                     }).done(callback);
                 },
-                find: function(callback) {
+                findImage: function(callback) {
                     db.Image.findOne(parseInt(request.payload.image)).done(callback);
                 },
-                update: ['create', 'find', function(callback, results) {
-                    results.find.addVote(results.create).done(callback);
+                findUser: function(callback) {
+                    db.User.findOne(request.auth.credentials.id).done(callback);
+                },
+                updateImage: ['create', 'findImage', function(callback, results) {
+                    results.findImage.addVote(results.create).done(callback);
+                }],
+                updateUser: ['create', 'findUser', 'updateImage', function(callback, results) {
+                    results.findUser.addVote(results.create).done(callback);
                 }],
             }, function(err, results) {
                 if(err) {

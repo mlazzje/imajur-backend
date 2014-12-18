@@ -22,7 +22,10 @@ module.exports = [{
 },{
 	method: 'POST',
 	path: '/commentaire/insert',
-	config: {handler: commentaireController.insert}
+	config: {
+        handler: commentaireController.insert,
+        auth: 'session'
+    }
 },{
 	method: 'GET',
 	path: '/commentaire/remove/{id}',

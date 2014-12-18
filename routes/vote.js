@@ -18,7 +18,10 @@ module.exports = [{
 },{
 	method: 'POST',
 	path: '/vote/insert',
-	config: {handler: voteController.insert}
+	config: {
+        handler: voteController.insert,
+        auth: 'session',
+    }
 },{
 	method: 'GET',
 	path: '/vote/remove/{id}',
