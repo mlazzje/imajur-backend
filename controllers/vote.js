@@ -31,6 +31,31 @@ voteController.prototype = (function() {
                 reply(err).code(418);
             });
 		},
+        byImage: function(request, reply){
+            async.auto({
+                image: function(callback) {
+                    db.Image.find(request.params.id)
+                    .done(callback)
+                },
+                upvotes: ['image', function(callback, results) {
+                    results.image.getVotes({where: {point: 1}})
+                    .done(callback);
+                }],
+                downvotes: ['image', function(callback, results) {
+                    results.image.getVotes({where: {point: -1}})
+                    .done(callback);
+                }]},
+                function(err, results) {
+                    if(err) {
+                        return reply().code(500);
+                    }
+                    return reply({
+                        upvotes: results.upvotes,
+                        downvotes: results.downvotes
+                    });
+                }
+            );
+        },
 		insert: function(request, reply) {
             if(request.payload.point != -1 && request.payload.point != 1) {
                 return reply("Invalid vote value").code(403);

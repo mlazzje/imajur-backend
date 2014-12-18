@@ -16,11 +16,11 @@ function ImageController(){};
 ImageController.prototype = (function() {
 	return {
 		list: function(request, reply) {
-            db.Image.findAll()
+            db.Image.findAll({include: [db.Vote, db.Commentaire]})
             .then(function(images) {
                 return reply(images);
             })
-            .catch(function() {
+            .catch(function(err) {
                 reply(err).code(500);
             });
 		},

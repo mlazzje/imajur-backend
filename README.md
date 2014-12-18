@@ -57,6 +57,13 @@ Requires
 'point' : -1 or 1
 'image' : image id to vote on
 
+/vote/byimage/{id}
+Returns votes and downvotes as arrays on an image
+{
+"upvotes": [],
+"downvotes": []
+}
+
 /commentaire/insert
 Create a vote (POST query)
 Requires
