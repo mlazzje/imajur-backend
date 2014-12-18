@@ -9,6 +9,7 @@
 var db = require('../models');
 var fs = require('fs');
 var path = require('path');
+var async = require('async');
 
 function ImageController(){};
 
@@ -46,16 +47,30 @@ ImageController.prototype = (function() {
             });
 		},
 		insert: function(request, reply) {
-            db.Image.create({
-                titre: request.payload.titre,
-                extension: request.payload.image.hapi.filename.split('.').pop()
-            })
-            .then(function(image) {
-                request.payload["image"].pipe(fs.createWriteStream(path.join("uploads", "i", image.id + "." + image.extension)));
-                return reply(image).code(201);
-            })
-            .catch(function(err) {
-                return reply(err);
+            async.auto({
+                image: function(callback) {
+                    db.Image.create({
+                        titre: request.payload.titre,
+                        extension: request.payload.image.hapi.filename.split('.').pop()
+                    }).done(callback);
+                },
+                user: ['image', function(callback, results) {
+                    db.User.findOne({where: {id: request.auth.credentials.id}}).done(callback);
+                }],
+                update: ['user', function(callback, results) {
+                    results.image.setUser(results.user).done(callback);
+                }],
+                upload: ['image', function(callback, results) {
+                    request.payload["image"].pipe(fs.createWriteStream(path.join("uploads", "i", results.image.id + "." + results.image.extension)))
+                    .on('finish', function() {
+                        callback(null);
+                    });
+                }]
+            }, function(err, results){
+                if(err) {
+                    return reply(err).code(500);
+                }
+                return reply(results.update).code(201);
             });
 		},
 		remove: function(request, reply) {

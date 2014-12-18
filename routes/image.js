@@ -21,6 +21,7 @@ module.exports = [{
 	path: '/image/insert',
 	config: {
         handler: imageController.insert,
+        auth: 'session',
         payload:{
             maxBytes: 209715200,
             output:'stream',
