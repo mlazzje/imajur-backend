@@ -28,7 +28,8 @@ fs.readdirSync(__dirname)
         //mod[i].config.cors = true;
         mod[i].config.cors = {
             origin: ['*'],
-            credentials: true
+            credentials: true,
+            matchOrigin: true
         };
     }
     module.exports = module.exports.concat(mod)
