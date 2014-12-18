@@ -69,3 +69,18 @@ Create a vote (POST query)
 Requires
 'content' : string containing the comment (URI escaped!)
 'image' : image id to comment on
+
+/vote/byimage/{id}
+Returns comments on an image
+[
+{
+"id": 1,
+"content": "fdsfdssfd",
+"notifie": null,
+"createdAt": "2014-12-18T15:02:38.293Z",
+"updatedAt": "2014-12-18T15:02:38.467Z",
+"userId": null,
+"imageId": 1,
+"user": null
+}
+]

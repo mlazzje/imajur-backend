@@ -38,16 +38,16 @@ voteController.prototype = (function() {
                     .done(callback)
                 },
                 upvotes: ['image', function(callback, results) {
-                    results.image.getVotes({where: {point: 1}})
+                    results.image.getVotes({include: [db.User], where: {point: 1}})
                     .done(callback);
                 }],
                 downvotes: ['image', function(callback, results) {
-                    results.image.getVotes({where: {point: -1}})
+                    results.image.getVotes({include: [db.User],where: {point: -1}})
                     .done(callback);
                 }]},
                 function(err, results) {
                     if(err) {
-                        return reply().code(500);
+                        return reply(err).code(500);
                     }
                     return reply({
                         upvotes: results.upvotes,

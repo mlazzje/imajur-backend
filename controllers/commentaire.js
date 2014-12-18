@@ -81,14 +81,23 @@ commentaireController.prototype = (function() {
                 reply(err).code(418);
             });
 		},
-        byImage: function(request, reply) {
-            db.Commentaire.findAll({'where': {'imageId': request.params.id}})
-            .then(function(commentaires) {
-                return reply(commentaires);
-            })
-            .error(function(err) {
-                return reply(err).err(404);
-            })
+        byImage: function(request, reply){
+            async.auto({
+                image: function(callback) {
+                    db.Image.find(request.params.id)
+                    .done(callback)
+                },
+                commentaires: ['image', function(callback, results) {
+                    results.image.getCommentaires({include: [db.User]})
+                    .done(callback);
+                }]},
+                function(err, results) {
+                    if(err) {
+                        return reply(err).code(500);
+                    }
+                    return reply(results.commentaires);
+                }
+            );
         }
 	}
 })();
